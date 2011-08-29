@@ -18,7 +18,7 @@ Puppet::Type.type(:package).provide :rvm,
     packages = []
     execpipe "#{rvm_cmd} list strings" do |process|
       process.each do |line|
-        packages << new(line.strip)
+        packages << new(:name => line.strip, :provider => name)
       end
     end
     packages
