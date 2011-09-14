@@ -3,6 +3,7 @@ class sm {
     package {
       "build-essential": ensure => installed;
       "curl": ensure => installed;
+      "git-core": ensure => installed;
     }
   }
 
@@ -11,14 +12,14 @@ class sm {
   exec { "sm-install":
     alias   => 'sm',
     cwd     => "/tmp",
-    path    => '/usr/bin:/usr/sbin:/bin',
+    path    => '/usr/bin:/usr/sbin:/bin:/opt/sm/bin',
     unless  => 'which sm',
-    command => 'bash -c "version=`curl https://bdsm.beginrescueend.com/releases/latest.txt` &&
-              echo \"Version: \$version\" &&
-              curl -O https://sm.beginrescueend.com/releases/sm-\${version}.tar.bz2 &&
-              tar jxf sm-\${version}.tar.bz2 &&
-              cd sm-\${version} && ./install"',
+    command => 'curl -L https://github.com/sm/sm/tarball/master -o sm-head.tar.gz &&
+    tar zxf sm-head.tar.gz &&
+    mv sm-sm-* sm-head &&
+    cd sm-head &&
+    ./install',
     require => Class['sm::dependencies'], 
   }
-
+  Class["sm"] -> Package<| provider == sm |>
 }
