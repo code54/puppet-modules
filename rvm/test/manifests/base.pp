@@ -20,5 +20,10 @@ user {deploy:
 rvm::user {'rvm::user::deploy': user => 'deploy', }
 
 package {"ruby-1.9.2-p290":
-  provider => rvm,
+  provider => 'rvm',
+}
+
+package {"ruby-1.9.2-p290@global:irbtools":
+  provider => 'rvm_gem',
+  require => Package['ruby-1.9.2-p290']
 }
