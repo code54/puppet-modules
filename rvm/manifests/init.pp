@@ -12,6 +12,7 @@ class rvm {
     exec {"group-assign-$user":
       unless  => "/usr/bin/groups ${user} | grep rvm",
       command => "/usr/sbin/usermod -aG rvm ${user}",
+      require => Exec['rvm-install']
     }
   }
 
