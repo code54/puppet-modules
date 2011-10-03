@@ -27,3 +27,7 @@ package {"ruby-1.9.2-p290@global:irbtools":
   provider => 'rvm_gem',
   require => Package['ruby-1.9.2-p290']
 }
+
+rvm::gemset {"Test gemset":
+ ruby => 'ruby-1.9.2-p290', gemset => 'onegemset',
+}

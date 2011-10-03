@@ -30,4 +30,10 @@ class rvm {
 
   Class["rvm"] -> Package<| provider == rvm |>
 
+  define gemset($ruby, $gemset) {
+    exec {"create $ruby@$gemset":
+      command => "/usr/local/rvm/bin/rvm use $ruby@$gemset --create",
+      require => Package[$ruby],
+    }
+  }
 }
