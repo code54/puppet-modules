@@ -34,9 +34,16 @@ rvm::gemset {"Test gemset":
 # Installing passenger apache!
 package {'passenger_apache_dependencies':
   name => ['apache2','apache2-prefork-dev','libapr1-dev','libaprutil1-dev','libcurl4-openssl-dev'],
+  # require => Exec['apt-update'],
 }
 
 class {"rvm::passenger::apache":
   ruby => 'ruby-1.9.2-p290',
   require => Package['passenger_apache_dependencies'],
 }
+
+exec {"apt-update":
+  command => '/usr/bin/apt-get update',
+  onlyif  => "/bin/sh -c 'uptime | grep -qE \"min|sec\" || [ ! -f /var/cache/apt/pkgcache.bin ] || /usr/bin/find /etc/apt/* -cnewer /var/cache/apt/pkgcache.bin | /bin/grep . > /dev/null'",
+}
+Exec['apt-update'] -> Package<| provider == apt |>
