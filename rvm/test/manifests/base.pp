@@ -1,4 +1,3 @@
-
 group {puppet:
   ensure => present,
 }
@@ -30,4 +29,14 @@ package {"ruby-1.9.2-p290@global:irbtools":
 
 rvm::gemset {"Test gemset":
  ruby => 'ruby-1.9.2-p290', gemset => 'onegemset',
+}
+
+# Installing passenger apache!
+package {'passenger_apache_dependencies':
+  name => ['apache2','apache2-prefork-dev','libapr1-dev','libaprutil1-dev','libcurl4-openssl-dev'],
+}
+
+class {"rvm::passenger::apache":
+  ruby => 'ruby-1.9.2-p290',
+  require => Package['passenger_apache_dependencies'],
 }

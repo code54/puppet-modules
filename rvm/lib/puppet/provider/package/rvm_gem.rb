@@ -6,7 +6,7 @@ Puppet::Type.type(:package).provide :rvm_gem, :parent => Puppet::Type.type(:pack
     gems = []
     all_rvm_gemsets do |rvm_gemset|
       gemlist(:local => true).collect do |hash|
-        hash[:name] = "#{rvm_gemset}:#{name}"
+        hash[:name] = "#{rvm_gemset}:#{hash[:name]}"
         gems << new(hash)
       end
     end

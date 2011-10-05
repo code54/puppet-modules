@@ -34,6 +34,7 @@ class rvm {
     exec {"create $ruby@$gemset":
       command => "/usr/local/rvm/bin/rvm use $ruby@$gemset --create",
       require => Package[$ruby],
+      creates => "/usr/local/rvm/gems/$ruby@$gemset"
     }
   }
 }
