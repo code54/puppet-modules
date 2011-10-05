@@ -15,4 +15,11 @@ class rvm::passenger::apache(
     logoutput => on_failure,
     require   => Package["$ruby@global:passenger"],
   }
+
+  exec {"generate apache passenger conf":
+    command => "/usr/local/rvm/bin/rvm $ruby exec passenger-install-apache2-module --snippet > /etc/apache2/mods-enabled/passenger.conf",
+    creates => '/etc/apache2/mods-enabled/passenger.conf',
+    require => Package["$ruby@global:passenger"],
+  }
+
 }
