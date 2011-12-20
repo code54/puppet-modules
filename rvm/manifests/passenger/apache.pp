@@ -2,7 +2,7 @@ class rvm::passenger::apache(
     $ruby
   ) {
 
-  package {"$ruby@global:passenger":
+  package {"${ruby}@global:passenger":
     provider => 'rvm_gem',
     require => Package[$ruby],
   }
