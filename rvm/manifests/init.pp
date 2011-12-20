@@ -9,7 +9,7 @@ class rvm {
   }
 
   define user ( $user = 'root' ) {
-    exec {"group-assign-$user":
+    exec {"group-assign-${user}":
       unless  => "/usr/bin/groups ${user} | grep rvm",
       command => "/usr/sbin/usermod -aG rvm ${user}",
       require => Exec['rvm-install']
@@ -31,10 +31,11 @@ class rvm {
   Class["rvm"] -> Package<| provider == rvm |>
 
   define gemset($ruby, $gemset) {
-    exec {"create $ruby@$gemset":
-      command => "/usr/local/rvm/bin/rvm use $ruby@$gemset --create",
+    exec {"create ${ruby}@${gemset}":
+      command => "bash -lc 'rvm use ${ruby}@${gemset} --create'",
+      path    => '/usr/bin:/usr/sbin:/bin:/usr/local/rvm/bin',
       require => Package[$ruby],
-      creates => "/usr/local/rvm/gems/$ruby@$gemset"
+      creates => "/usr/local/rvm/gems/${ruby}@${gemset}",
     }
   }
 }
