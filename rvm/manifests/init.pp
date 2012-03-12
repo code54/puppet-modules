@@ -1,10 +1,19 @@
 class rvm {
 
   class dependencies {
-    package {
-      "build-essential": ensure => installed;
-      "curl":     ensure => installed;
-      "git-core": ensure => installed;
+    case $operatingsystem {
+      'centos', 'redhat', 'fedora': {
+        $dependencies_names = ['gcc-c++' 'patch' 'readline' 'readline-devel' 'zlib' 'zlib-devel' 'libyaml-devel' 'libffi-devel' 'openssl-devel']
+      }
+      'ubuntu', 'debian': {
+        $dependencies_names = ["build-essential", "curl", "git-core"]
+      }
+      default: { $dependencies_names = "Unknwonw dependencies"}
+    }
+
+    package {"rvm_dependencies":
+      name => $dependencies_names,
+      ensure => installed;
     }
   }
 
