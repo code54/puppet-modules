@@ -3,13 +3,14 @@ class rvm::passenger::apache(
   ) {
 
   case $operatingsystem {
-  'centos', 'redhat', 'fedora': {
-    $modules_path = '/etc/httpd/modules'
+    'centos', 'redhat', 'fedora': {
+      $modules_path = '/etc/httpd/modules'
+    }
+    'ubuntu', 'debian': {
+      $modules_path = '/etc/apache2/mods-enabled'
+    }
+    default: { $dependencies_names = "Unknwonw dependencies"}
   }
-  'ubuntu', 'debian': {
-    $modules_path = '/etc/apache2/mods-enabled'
-  }
-  default: { $dependencies_names = "Unknwonw dependencies"}
 
   package {"${ruby}@global:passenger":
     provider => 'rvm_gem',
