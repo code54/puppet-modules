@@ -2,6 +2,15 @@ class rvm::passenger::apache(
     $ruby
   ) {
 
+  case $operatingsystem {
+  'centos', 'redhat', 'fedora': {
+    $modules_path = '/etc/httpd/modules'
+  }
+  'ubuntu', 'debian': {
+    $modules_path = '/etc/apache2/mods-enabled'
+  }
+  default: { $dependencies_names = "Unknwonw dependencies"}
+
   package {"${ruby}@global:passenger":
     provider => 'rvm_gem',
     require => Package[$ruby],
@@ -17,7 +26,7 @@ class rvm::passenger::apache(
   }
 
   exec {"generate apache passenger conf":
-    command => "/usr/local/rvm/bin/rvm $ruby exec passenger-install-apache2-module --snippet > /etc/apache2/mods-enabled/passenger.conf",
+    command => "/usr/local/rvm/bin/rvm $ruby exec passenger-install-apache2-module --snippet > $modules_path/passenger.conf",
     creates => '/etc/apache2/mods-enabled/passenger.conf',
     require => Package["$ruby@global:passenger"],
   }
