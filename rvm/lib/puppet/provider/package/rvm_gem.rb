@@ -15,7 +15,7 @@ Puppet::Type.type(:package).provide :rvm_gem, :parent => Puppet::Type.type(:pack
 
   def self.all_rvm_gemsets
     if FileTest.file? "/usr/local/rvm/bin/rvm" and FileTest.executable? "/usr/local/rvm/bin/rvm"
-      output = execute ["/usr/local/rvm/bin/rvm list gemsets | tail -n -3 | sed 's/=>/  /g' | cut -d ' ' -f 4 | grep -v ^$"]
+      output = execute ["/usr/local/rvm/bin/rvm list gemsets | tail -n +3 | sed 's/=>/  /g' | cut -d ' ' -f 4 | grep -v ^$"]
       gemsets = output.split("\n")
 
       gemsets.map! do |gemset|
