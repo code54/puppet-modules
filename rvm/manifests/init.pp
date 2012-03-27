@@ -9,7 +9,9 @@ class rvm {
       'ubuntu', 'debian': {
         $dependencies_names = ["build-essential", "curl", "git-core"]
       }
-      default: { $dependencies_names = "Unknwonw dependencies"}
+      default: {
+        fail "Unknwonw RVM dependencies for ${::operatingsystem}"
+      }
     }
 
     package {"rvm_dependencies":
@@ -36,7 +38,7 @@ class rvm {
     user    => 'root',
     unless  => 'which rvm',
     command => "curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer | bash -s stable",
-    require => Class['rvm::dependencies'], 
+    require => Class['rvm::dependencies'],
   }
 
   Class["rvm"] -> Package<| provider == rvm |>

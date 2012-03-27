@@ -2,14 +2,16 @@ class rvm::passenger::apache(
     $ruby
   ) {
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'centos', 'redhat', 'fedora': {
       $modules_path = '/etc/httpd/modules'
     }
     'ubuntu', 'debian': {
       $modules_path = '/etc/apache2/mods-enabled'
     }
-    default: { $dependencies_names = "Unknwonw dependencies"}
+    default: {
+      fail "Unknown RVM dependencies for ${::operatingsystem}"
+    }
   }
 
   package {"${ruby}@global:passenger":
